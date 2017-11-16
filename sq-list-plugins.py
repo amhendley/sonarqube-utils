@@ -5,7 +5,7 @@ from sonarcube import *
 
 
 def print_help():
-    print('usage: {} -n <name> -k <key> [-b <branch>] [-p]'.format(__file__))
+    print('usage: {} [-i] [-p] [-u] [-a] [-h]'.format(__file__))
 
 
 show_installed = False

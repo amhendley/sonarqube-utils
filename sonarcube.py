@@ -7,17 +7,16 @@ headers = {'Content-Type': 'application/json'}
 
 const.SYS_ERROR_SEARCH_PROJECT = 3
 const.SYS_ERROR_CREATE_PROJECT = 4
+const.SYS_ERROR_SEARCH_USER = 5
+const.SYS_ERROR_CREATE_USER = 6
+const.SYS_ERROR_ADD_GROUP_USER = 7
 
 
 def create_project(key, name, branch):
     params = {
         'projects': key
     }
-    resp = requests.get(url=expand_url(base_url + 'projects/search', params), auth=auth)
-
-    if resp.status_code != httplib.OK:
-        print_response_error(resp)
-        sys.exit(const.SYS_ERROR_SEARCH_PROJECT)
+    resp = send_request(url=expand_url(base_url + 'projects/search', params), auth=auth, exit_value=const.SYS_ERROR_SEARCH_PROJECT)
 
     page_index, page_count, page_length = get_paging_info(resp)
     if page_count == 0:
@@ -27,14 +26,9 @@ def create_project(key, name, branch):
             'branch': branch
         }
         url = expand_url(base_url + 'projects/create', params)
-        resp = requests.post(url=url, headers=headers, auth=auth)
+        resp = send_request(url=url, headers=headers, auth=auth)
 
-        if resp.status_code != httplib.OK:
-            print('Url : {}'.format(url))
-            print_response_error(resp)
-            sys.exit(const.SYS_ERROR_CREATE_PROJECT)
-        else:
-            print(pretty_print_json(resp.json()))
+    return resp
 
 
 def create_project_group(project_key, name, description, permissions=[]):
@@ -64,6 +58,46 @@ def create_project_group(project_key, name, description, permissions=[]):
         params['permission'] = perm
         url = expand_url(base_url + 'permissions/add_group', params)
         send_request(url=url, headers=headers, auth=auth)
+
+
+def create_user(login, name, email, password='', scm=[], local=True):
+    params = {
+        'q': login
+    }
+    url = expand_url(base_url + 'users/search', params)
+
+    resp = send_request(url=expand_url(url, params),
+                        auth=auth,
+                        headers=headers,
+                        exit_value=const.SYS_ERROR_SEARCH_USER)
+
+    page_index, page_count, page_length = get_paging_info(resp)
+
+    if page_count == 0:
+        params = {
+            'login': login,
+            'name': name,
+            'password': password,
+            'email': email,
+            'local': local,
+            'scmAccount': scm
+        }
+
+        url = expand_url(base_url + 'users/create', params)
+
+        resp = send_request(url=url, headers=headers, auth=auth, exit_value=const.SYS_ERROR_CREATE_USER)
+
+    return resp
+
+
+def add_group_user(group, login):
+    params = {
+        'login': login,
+        'name': group
+    }
+
+    url = expand_url(base_url + 'user_groups/add_user', params)
+    resp = send_request(url=url, headers=headers, auth=auth, exit_value=const.SYS_ERROR_ADD_GROUP_USER)
 
 
 def show_plugin_list(installed, pending, updates, available):
