@@ -1,38 +1,30 @@
 #!python
 
-import getopt
+import argparse
+import os
 from sonarcube import *
 
 
-def print_help():
-    print('usage: {} -n <name> -k <key> [-b <branch>] [-p]'.format(__file__))
-
-
-project_name = ''
-key_name = ''
-branch_name = ''
-set_as_private = False
-sys_args = sys.argv[1:]
-headers = {'Content-Type': 'application/json'}
+parser = argparse.ArgumentParser(prog=os.path.basename(__file__),
+                                 description='Utility script to create a new project in SonarQube')
 
 try:
-    opts, args = getopt.getopt(sys_args, "hn:k:b:p", ["help", "name=", "key=", "branch=", "private"])
-except getopt.GetoptError:
-    print_help()
-    sys.exit(const.SYS_ERROR_INVALID_ARGS)
+    parser.add_argument('-n', '--name', help='The name of the project to create')
+    parser.add_argument('-k', '--key', help='The unique key of the project to create')
+    parser.add_argument('-b', '--branch', help='The name of the branch the project needs associated with it')
+    parser.add_argument('-p', '--private', action='store_true',
+                        help='Indicates whether the project should be created as private. The default is public.')
 
-for opt, arg in opts:
-    if opt in ('-h', '--help'):
-        print_help()
-        sys.exit()
-    elif opt in ("-n", "--name"):
-        project_name = arg
-    elif opt in ("-k", "--key"):
-        key_name = arg
-    elif opt in ("-b", "--branch"):
-        branch_name = arg
-    elif opt in ("-p", "--private"):
-        set_as_private = True
+    args = parser.parse_args()
+except:
+    parser.print_help()
+    sys.exit()
+
+project_name = args.name
+key_name = args.key
+branch_name = args.branch
+set_as_private = args.private
+headers = {'Content-Type': 'application/json'}
 
 #
 # SonarQube
