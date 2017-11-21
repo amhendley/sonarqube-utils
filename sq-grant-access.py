@@ -1,53 +1,38 @@
 #!/usr/bin/python
 
-import getopt
+import argparse
+import os
 from sonarcube import *
 
 
-def print_help():
-    help_string = 'usage: {} -k <project_key> -g <group> '.format(__file__)
-    help_string += '-l <login> -n <name> -p <password> [-e <email>] [-s <scm_account>] [-x]'
-    print(help_string)
-
-
-project_key = ''
-groups = []
-login_id = ''
-login_name = ''
-login_password = ''
-login_email = ''
-login_scm = []
-login_local = 'true'
-sys_args = sys.argv[1:]
+parser = argparse.ArgumentParser(prog=os.path.basename(__file__),
+                                 description='Utility script to grant user access to a project in SonarQube')
 
 try:
-    opts, args = getopt.getopt(sys_args, "hk:g:d:l:n:p:e:s:x", ["help", "project-key=", "group=",
-                                                                "login=", "name=", "password=", "email=", "scm=",
-                                                                "external"])
-except getopt.GetoptError:
-    print_help()
-    sys.exit(2)
+    parser.add_argument('-l', '--login', help='The unique name of the login account')
+    parser.add_argument('-n', '--name', help='The name description of the login account')
+    parser.add_argument('-p', '--password', help='The password for the login account')
+    parser.add_argument('-e', '--email', help='The email for the login account')
+    parser.add_argument('-s', '--scm', nargs='*',
+                        help='The SCM account name to be associated with the login account. Multiples allowed')
+    parser.add_argument('-g', '--group', nargs='*',
+                        help='The name of a group the user to be assigned to. Multiples allowed')
+    parser.add_argument('-x', '--external', action='store_true',
+                        help='Indicates whether the login account is external to SonarQube. The default is internal.')
 
-for opt, arg in opts:
-    if opt in ('-h', '--help'):
-        print_help()
-        sys.exit()
-    elif opt in ("-k", "--project-key"):
-        project_key = arg
-    elif opt in ("-g", "--group"):
-        groups.append(arg)
-    elif opt in ("-l", "--login"):
-        login_id = arg
-    elif opt in ("-n", "--name"):
-        login_name = arg
-    elif opt in ("-p", "--password"):
-        login_password = arg
-    elif opt in ("-e", "--email"):
-        login_email = arg
-    elif opt in ("-s", "--scm"):
-        login_scm.append(arg)
-    elif opt in ("-x", "--external"):
-        login_local = 'false'
+    args = parser.parse_args()
+except:
+    parser.print_help()
+    sys.exit()
+
+login_id = args.login
+login_name = args.name
+login_password = args.password
+login_email = args.email
+login_scm = args.scm
+login_local = (not args.external)
+project_key = args.key
+groups = args.group
 
 #
 # SonarQube
