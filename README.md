@@ -7,7 +7,7 @@ A set of Sonarqube administrative scripts for managing projects and user access,
 
 ## Usage
 ### Create a new SonarQube project
-```bash
+```
 usage: sq-create-project.py [-h] -n NAME -k KEY [-b BRANCH] [-p]
 
 Utility script to create a new project in SonarQube
@@ -24,7 +24,7 @@ optional arguments:
 ```
 
 ### Create a new login and grant access to groups
-```bash
+```
 usage: sq-grant-access.py [-h] -l LOGIN -n NAME [-p PASSWORD] [-e EMAIL]
                           [-s [SCM [SCM ...]]] [-g [GROUP [GROUP ...]]] [-x]
 
@@ -50,7 +50,7 @@ optional arguments:
 ```
 
 ### List plugins
-```bash
+```
 usage: sq-list-plugins.py [-h] [-i] [-p] [-u] [-a]
 
 Utility script to create a new project in SonarQube
