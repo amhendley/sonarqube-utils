@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser(prog=os.path.basename(__file__),
                                  description='Utility script to grant user access to a project in SonarQube')
 
 try:
-    parser.add_argument('-l', '--login', help='The unique name of the login account')
-    parser.add_argument('-n', '--name', help='The name description of the login account')
+    parser.add_argument('-l', '--login', required=True, help='The unique name of the login account')
+    parser.add_argument('-n', '--name', required=True, help='The name description of the login account')
     parser.add_argument('-p', '--password', help='The password for the login account')
     parser.add_argument('-e', '--email', help='The email for the login account')
     parser.add_argument('-s', '--scm', nargs='*',

@@ -9,8 +9,8 @@ parser = argparse.ArgumentParser(prog=os.path.basename(__file__),
                                  description='Utility script to create a new project in SonarQube')
 
 try:
-    parser.add_argument('-n', '--name', help='The name of the project to create')
-    parser.add_argument('-k', '--key', help='The unique key of the project to create')
+    parser.add_argument('-n', '--name', required=True, help='The name of the project to create')
+    parser.add_argument('-k', '--key', required=True, help='The unique key of the project to create')
     parser.add_argument('-b', '--branch', help='The name of the branch the project needs associated with it')
     parser.add_argument('-p', '--private', action='store_true',
                         help='Indicates whether the project should be created as private. The default is public.')
