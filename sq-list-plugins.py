@@ -1,7 +1,8 @@
 #!python
 
 import getopt
-from sonarcube import *
+
+from common.sonarcube import *
 
 
 def print_help():

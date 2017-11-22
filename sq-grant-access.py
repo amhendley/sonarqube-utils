@@ -2,8 +2,8 @@
 
 import argparse
 import os
-from sonarcube import *
 
+from common.sonarcube import *
 
 parser = argparse.ArgumentParser(prog=os.path.basename(__file__),
                                  description='Utility script to grant user access to a project in SonarQube')
