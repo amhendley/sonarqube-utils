@@ -24,7 +24,6 @@ project_name = args.name
 key_name = args.key
 branch_name = args.branch
 set_as_private = args.private
-headers = {'Content-Type': 'application/json'}
 
 #
 # SonarQube
