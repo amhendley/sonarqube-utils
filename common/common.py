@@ -4,6 +4,7 @@ import requests
 import sys
 import urllib
 import httplib
+from termcolor import colored
 
 
 class const:
@@ -36,12 +37,16 @@ def decode_json(data):
     return json.JSONDecoder().decode(pretty_print_json(data))
 
 
+def print_error(msg):
+    print(colored(msg, 'red'))
+
+
 def print_response_error(response):
     msg = ''
     err = decode_json(response.json())
     for e in err['errors']:
         msg += '{}\n'.format(e['msg'])
-    print('ERROR ({}) {}'.format(resp.status_code, msg))
+    print_error('ERROR ({}) {}'.format(response.status_code, msg))
 
 
 def expand_url(url, params={}):

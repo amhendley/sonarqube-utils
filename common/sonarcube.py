@@ -145,3 +145,10 @@ def show_plugin_list(installed, pending, updates, available):
             results['available'] = decode_json(resp.json())['plugins']
 
     return results
+
+
+def get_server_status():
+    url = expand_url(base_url + 'system/status')
+    resp = send_request(url=url, headers=headers, auth=auth)
+
+    return resp
