@@ -21,7 +21,6 @@ try:
 
     args = parser.parse_args()
 except:
-    parser.print_help()
     sys.exit()
 
 show_installed = args.installed
