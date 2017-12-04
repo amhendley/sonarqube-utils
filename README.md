@@ -5,6 +5,13 @@ A set of Sonarqube administrative scripts for managing projects and user access,
 * SonarQube 6.6
 * Python 2.7
 
+## Dependencies
+* argparse
+* httplib
+* termcolor
+* urllib
+
+
 ## Usage
 ### Create a new SonarQube project
 ```
@@ -67,3 +74,13 @@ optional arguments:
 
 ```
 
+### Get status
+```
+usage: sq-get-status.py [-h]
+
+Utility script to capture the current status of SonarQube
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+```
